@@ -1,0 +1,26 @@
+
+
+
+5MEW-HRDC-ALAX-F29J-DJFL
+7ZUC-PV24-ZZPW-6T7W-YKCS
+7MHH-TR89-7EWQ-YMD5-92NZ
+6CVD-WMM7-2VE6-BGPV-HWHS
+
+
+
+
+
+
+function regs_amazon(str){
+    var dat = str.split("----");
+    if(dat.length>=2){
+        document.getElementById("ap_email").value = dat[0];
+        document.getElementById("ap_password").value = dat[1];
+        document.getElementById("ap_password_check").value = dat[1];
+    }
+    var arr = dat[0].split("@");
+    document.getElementById("ap_customer_name").value = arr[0];
+}
+
+regs_amazon("sletheighddbc@outlook.com----bqTXO4Bi")
+document.getElementById("continue").click()
