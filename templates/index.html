@@ -45,6 +45,11 @@
 
   <body>
 
+
+  <textarea id="contents" style="position: fixed; top:-300px;" cols="40" rows="5">{{regJs}}</textarea>
+
+
+
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -87,11 +92,14 @@
       {% for lie in listArr%}
         <ul class="emailList">
           <li style="width: 40px">{{ loop.index }}</li>
-          <li style="width: 400px" id="email{{ loop.index }}">{{lie}}</li>
-          <li style="width: 120px;" id="emailText{{ loop.index }}">未使用</li>
+          <li style="width: 200px" id="email_user{{ loop.index }}">{{lie.user}}</li>
+          <li style="width: 10px">|</li>
+          <li style="width: 100px" id="email_pass{{ loop.index }}">{{lie.pass}}</li>
+          <li style="width: 10px">|</li>
+          <li style="width: 150px;" id="emailText{{ loop.index }}">未使用</li>
           <li style="width: 120px;"><p><button onclick="getEamilCode({{ loop.index }})" class="btn btn-default" href="#" role="button">邮箱代码 &raquo;</button></p></li>
-          <li style="width: 120px;"><p><button onclick="getEamilCode({{ loop.index }})" class="btn btn-default" href="#" role="button">获取手机 &raquo;</button></p></li>
-          <li style="width: 120px;"><p><button onclick="getEamilCode({{ loop.index }})" class="btn btn-default" href="#" role="button">注册代码 &raquo;</button></p></li>
+          <li style="width: 120px;"><p><button onclick="getSmsMobile({{ loop.index }})" class="btn btn-default" href="#" role="button">获取手机 &raquo;</button></p></li>
+          <li style="width: 120px;"><p><button onclick="copyCode({{ loop.index }})" class="btn btn-default" href="#" role="button">注册代码 &raquo;</button></p></li>
         </ul>
 
       {%endfor%}
@@ -104,11 +112,56 @@
     </div> <!-- /container -->
 
     <script>
-      function getEamilCode(index){
+      function getSmsMobile(index){
+        
+          $.get("sms_newmobile",function(res){
+            $("#emailText"+index).text(res)
+            var num=0
+            var szend;
+            var mobile = res
+
+            if(mobile.length == 11){
+                szend = setInterval(() => {
+                num = num +1
+                $.get("sms_getcode?mobile="+mobile,function(res){
+                  if(res.length>=4){
+                    $("#emailText"+index).text(res)
+                    clearInterval(szend)
+                  }
+                   
+                });
+                if(num > 15){
+                  $("#emailText"+index).text("获取超时")
+                  clearInterval(szend)
+                }
+              }, 3000);
+            }
+            
+          })
+      }
+
+      function copyCode(index){
         var email = document.getElementById("email"+index).innerText;
+        var raw = $("#contents").val();
+        var news = raw.replace("userpwd",email)
+        $("#contents").val(news);
+        var e=document.getElementById("contents");
+        e.select();
+        document.execCommand("Copy"); 
+        alert("已复制代码");
+        setTimeout(function(){
+          $("#contents").val(raw);
+        },500);
+          
+
+      }
+      function getEamilCode(index){
+        var email = document.getElementById("email_user"+index).innerText+"----"+document.getElementById("email_pass"+index).innerText;
+
         $("#emailText"+index).text("获取中...")
         $.get("/email?user="+email,function(res){
           $("#emailText"+index).text(res);
+          
         })
       }
     </script>

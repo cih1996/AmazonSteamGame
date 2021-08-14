@@ -1,16 +1,3 @@
-
-
-
-5MEW-HRDC-ALAX-F29J-DJFL
-7ZUC-PV24-ZZPW-6T7W-YKCS
-7MHH-TR89-7EWQ-YMD5-92NZ
-6CVD-WMM7-2VE6-BGPV-HWHS
-
-
-
-
-
-
 function regs_amazon(str){
     var dat = str.split("----");
     if(dat.length>=2){
@@ -22,5 +9,5 @@ function regs_amazon(str){
     document.getElementById("ap_customer_name").value = arr[0];
 }
 
-regs_amazon("sletheighddbc@outlook.com----bqTXO4Bi")
+regs_amazon("userpwd")
 document.getElementById("continue").click()
