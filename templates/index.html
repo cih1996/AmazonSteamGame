@@ -141,7 +141,7 @@
       }
 
       function copyCode(index){
-        var email = document.getElementById("email_user"+index).innerText  +"----"+ document.getElementById("email_pass"+index).innerText;
+        var email = document.getElementById("email"+index).innerText;
         var raw = $("#contents").val();
         var news = raw.replace("userpwd",email)
         $("#contents").val(news);
